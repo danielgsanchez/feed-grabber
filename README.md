@@ -29,6 +29,12 @@ To change the file name, open the script manager's menu on Instagram and choose 
 powershell -ExecutionPolicy Bypass -File userscript/build.ps1
 ```
 
+## Releases
+
+To publish a new version, change `version` in `manifest.json`, run `userscript/build.ps1` and push to `main`. A GitHub Actions workflow then creates the release and its ZIP. It fails if `feed-grabber.user.js` is out of date.
+
+Pushing a new version also updates the userscript for everyone, since script managers read it directly from `main`.
+
 ## How it works
 
 - `content.js` places the button and works out which photo or video is on screen.
