@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Feed Grabber
 // @namespace    https://github.com/danielgsanchez/feed-grabber
-// @version      0.5.1
+// @version      0.5.2
 // @description  Download the Instagram photo or video you are viewing (including carousel slides) and stories.
+// @author       danielgsanchez
 // @homepageURL  https://github.com/danielgsanchez/feed-grabber
 // @supportURL   https://github.com/danielgsanchez/feed-grabber/issues
 // @updateURL    https://raw.githubusercontent.com/danielgsanchez/feed-grabber/main/feed-grabber.user.js

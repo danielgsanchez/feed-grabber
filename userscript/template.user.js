@@ -3,6 +3,7 @@
 // @namespace    https://github.com/danielgsanchez/feed-grabber
 // @version      {{VERSION}}
 // @description  {{DESCRIPTION}}
+// @author       danielgsanchez
 // @homepageURL  https://github.com/danielgsanchez/feed-grabber
 // @supportURL   https://github.com/danielgsanchez/feed-grabber/issues
 // @updateURL    https://raw.githubusercontent.com/danielgsanchez/feed-grabber/main/feed-grabber.user.js
