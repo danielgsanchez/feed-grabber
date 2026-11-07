@@ -20,8 +20,7 @@
 
   // CDN URLs end in something like 551695984_1789_6543_n.jpg
   function mediaIdFromUrl(url) {
-    const name = lastPathSegment(url).replace(/\.[^.]*$/, '');
-    return name.match(/^\d+/)?.[0] || name.replace(/[^\w-]/g, '').slice(0, 60);
+    return lastPathSegment(url).replace(/\.[^.]*$/, '').replace(/[^\w-]/g, '');
   }
 
   function extensionFromUrl(url, fallback) {
