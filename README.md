@@ -23,10 +23,18 @@ To update, replace the folder with the one from the latest ZIP, click the reload
 
 To change the file name, open the script manager's menu on Instagram and choose **File name options**. The manager updates the script automatically.
 
-`feed-grabber.user.js` is generated from the extension's files. After changing them, run:
+`feed-grabber.user.js` is generated from the extension's files. After changing them, rebuild it.
+
+On Windows:
 
 ```bash
 powershell -ExecutionPolicy Bypass -File userscript/build.ps1
+```
+
+On Linux and macOS, with [PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) installed:
+
+```bash
+pwsh userscript/build.ps1
 ```
 
 ## Releases

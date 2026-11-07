@@ -1,5 +1,7 @@
 # Builds feed-grabber.user.js from the extension's source files.
-# Run it after changing the extension: powershell -ExecutionPolicy Bypass -File userscript\build.ps1
+# Run it after changing the extension:
+#   Windows:       powershell -ExecutionPolicy Bypass -File userscript/build.ps1
+#   Linux and Mac: pwsh userscript/build.ps1
 $ErrorActionPreference = 'Stop'
 
 $root = Split-Path $PSScriptRoot -Parent
@@ -9,9 +11,11 @@ function Read-Source([string]$name) {
   ([IO.File]::ReadAllText((Join-Path $root $name), $utf8)) -replace "`r`n", "`n"
 }
 
-# Turns text into a JavaScript string literal.
+# Turns text into a JavaScript string literal. Done by hand because ConvertTo-Json escapes
+# differently in Windows PowerShell and PowerShell 7, and the result must match on every system.
 function To-JsString([string]$text) {
-  $text | ConvertTo-Json -Compress
+  $escaped = $text.Replace('\', '\\').Replace('"', '\"').Replace("`r", '').Replace("`n", '\n').Replace("`t", '\t')
+  "`"$escaped`""
 }
 
 $manifest = (Read-Source 'manifest.json') | ConvertFrom-Json
