@@ -16,7 +16,6 @@
 // @grant        unsafeWindow
 // @grant        GM_addStyle
 // @grant        GM_addValueChangeListener
-// @grant        GM_download
 // @grant        GM_getValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_setValue
@@ -41,35 +40,23 @@
     setTimeout(() => URL.revokeObjectURL(url), 60000);
   }
 
-  // Script managers differ in what GM_download accepts, so a failure falls back to a manual save.
+  // Not GM_download: script managers differ in what it accepts, and using it with a fallback
+  // showed the save dialog twice in Tampermonkey.
   function download(url, filename) {
     return new Promise((resolve) => {
       const fail = (detail) => resolve({ ok: false, error: `Download failed${detail}` });
-      const downloadManually = () => {
-        GM_xmlhttpRequest({
-          method: 'GET',
-          url,
-          responseType: 'blob',
-          onload: (res) => {
-            if (res.status < 200 || res.status >= 300) return fail(` (${res.status})`);
-            saveBlob(res.response, filename);
-            resolve({ ok: true });
-          },
-          onerror: () => fail(''),
-          ontimeout: () => fail(''),
-        });
-      };
-      try {
-        GM_download({
-          url,
-          name: filename,
-          onload: () => resolve({ ok: true }),
-          onerror: downloadManually,
-          ontimeout: downloadManually,
-        });
-      } catch {
-        downloadManually();
-      }
+      GM_xmlhttpRequest({
+        method: 'GET',
+        url,
+        responseType: 'blob',
+        onload: (res) => {
+          if (res.status < 200 || res.status >= 300) return fail(` (${res.status})`);
+          saveBlob(res.response, filename);
+          resolve({ ok: true });
+        },
+        onerror: () => fail(''),
+        ontimeout: () => fail(''),
+      });
     });
   }
 
