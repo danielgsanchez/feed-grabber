@@ -10,7 +10,7 @@ cd "$(dirname "$0")/.."
 LC_ALL=C
 export LC_ALL
 
-TEMPLATE=userscript/template.user.js
+TEMPLATE=userscript/template.js
 TARGET=feed-grabber.user.js
 TAB=$(printf '\t')
 
