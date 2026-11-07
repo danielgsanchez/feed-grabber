@@ -385,7 +385,7 @@
     },
     { passive: true },
   );
-  document.documentElement.addEventListener('mouseleave', () => {
+  document.addEventListener('mouseleave', () => {
     pointer = null;
     scheduleRefresh();
   });

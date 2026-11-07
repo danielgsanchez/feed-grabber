@@ -15,6 +15,20 @@ A small Chrome extension for saving Instagram media you are viewing.
 
 To update, replace the folder with the one from the latest ZIP, click the reload icon on the extension's card and reload Instagram.
 
+## Install as a userscript
+
+1. Install a script manager such as [Tampermonkey](https://www.tampermonkey.net/) or [Violentmonkey](https://violentmonkey.github.io/). Greasemonkey is not supported. In Chrome, the manager may ask you to turn on Developer mode or allow user scripts.
+2. Open [feed-grabber.user.js](https://raw.githubusercontent.com/danielgsanchez/feed-grabber/main/feed-grabber.user.js) and confirm the installation.
+3. Reload any open Instagram tab.
+
+To change the file name, open the script manager's menu on Instagram and choose **File name options**. The manager updates the script automatically.
+
+`feed-grabber.user.js` is generated from the extension's files. After changing them, run:
+
+```bash
+powershell -ExecutionPolicy Bypass -File userscript/build.ps1
+```
+
 ## How it works
 
 - `content.js` places the button and works out which photo or video is on screen.
