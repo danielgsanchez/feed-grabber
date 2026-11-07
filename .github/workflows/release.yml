@@ -15,7 +15,7 @@ jobs:
       - name: Keep line endings as stored in the repository
         run: git config --global core.autocrlf false
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check that the userscript is up to date
         shell: powershell
