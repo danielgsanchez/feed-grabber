@@ -12,10 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - { os: windows-latest, shell: powershell }
-          - { os: ubuntu-latest, shell: pwsh }
-          - { os: macos-latest, shell: pwsh }
+        os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Keep line endings as stored in the repository
@@ -33,7 +30,7 @@ jobs:
           fi
 
       - name: Check that the extension can be packaged
-        shell: ${{ matrix.shell }}
+        shell: pwsh
         run: ./scripts/package-extension.ps1
 
   release:
