@@ -23,23 +23,15 @@ To update, replace the folder with the one from the latest ZIP, click the reload
 
 To change the file name, open the script manager's menu on Instagram and choose **File name options**. The manager updates the script automatically.
 
-`feed-grabber.user.js` is generated from the extension's files. After changing them, rebuild it.
-
-On Windows:
+`feed-grabber.user.js` is generated from the extension's files. After changing them, rebuild it from a terminal on Linux or macOS, or from Git Bash on Windows:
 
 ```bash
-powershell -ExecutionPolicy Bypass -File userscript/build.ps1
-```
-
-On Linux and macOS, with [PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell) installed:
-
-```bash
-pwsh userscript/build.ps1
+sh userscript/build.sh
 ```
 
 ## Releases
 
-To publish a new version, change `version` in `manifest.json`, run `userscript/build.ps1` and push to `main`. A GitHub Actions workflow then creates the release and its ZIP. It fails if `feed-grabber.user.js` is out of date.
+To publish a new version, change `version` in `manifest.json`, run `sh userscript/build.sh` and push to `main`. A GitHub Actions workflow then creates the release and its ZIP. It fails if `feed-grabber.user.js` is out of date.
 
 Pushing a new version also updates the userscript for everyone, since script managers read it directly from `main`.
 
