@@ -1,4 +1,4 @@
-# Instagram Downloader
+# Feed Grabber
 
 A small Chrome extension for saving Instagram media you are viewing.
 
