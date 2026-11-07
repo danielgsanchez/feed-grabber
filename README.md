@@ -8,12 +8,12 @@ A small Chrome extension for saving Instagram media you are viewing.
 
 ## Install
 
-1. Download or clone this repository.
+1. Download [feed-grabber.zip](https://github.com/danielgsanchez/feed-grabber/releases/latest/download/feed-grabber.zip) and unzip it somewhere you'll keep it, because Chrome loads the extension from that folder.
 2. Open `chrome://extensions` and turn on **Developer mode**.
-3. Click **Load unpacked** and select the repository folder.
+3. Click **Load unpacked** and select the `feed-grabber` folder.
 4. Reload any open Instagram tab.
 
-After changing the code, click the reload icon on the extension's card and reload Instagram.
+To update, replace the folder with the one from the latest ZIP, click the reload icon on the extension's card and reload Instagram.
 
 ## How it works
 
