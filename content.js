@@ -16,6 +16,17 @@
 
   // ---------- File name ----------
 
+  let settings = DEFAULT_SETTINGS;
+  chrome.storage.local.get(DEFAULT_SETTINGS).then((stored) => {
+    settings = stored;
+  });
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local') return;
+    const updated = { ...settings };
+    for (const [key, change] of Object.entries(changes)) updated[key] = change.newValue;
+    settings = updated;
+  });
+
   const lastPathSegment = (url) => new URL(url, location.href).pathname.split('/').pop() || '';
 
   // CDN URLs end in something like 551695984_1789_6543_n.jpg
@@ -30,10 +41,9 @@
 
   // Videos have long non-numeric names, so their ID comes from the thumbnail.
   function buildFilename(username, idSourceUrl, downloadUrl, isVideo) {
-    const safeUser = username.replace(/[^\w.-]/g, '').replace(/\.+$/, '') || 'instagram';
     const id = mediaIdFromUrl(idSourceUrl) || String(Date.now());
     const ext = extensionFromUrl(downloadUrl, isVideo ? 'mp4' : 'jpg');
-    return `${safeUser}_${isVideo ? 'VID' : 'IMG'}${id}.${ext}`;
+    return composeFilename(settings, { username, id, isVideo, ext });
   }
 
   // ---------- Finding what's on screen ----------

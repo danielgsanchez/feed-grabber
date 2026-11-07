@@ -4,7 +4,7 @@ A small Chrome extension for saving Instagram media you are viewing.
 
 - **Posts:** hover over a photo or video and click the button at the top center. In a carousel, it saves the current slide.
 - **Stories:** click the button to the right of the story to save the image or video.
-- **File names:** `username_IMG123456789_1789_6543_n.jpg` for images and `username_VID987654321_1789_6543_n.mp4` for videos, using the file's full name on Instagram.
+- **File names:** by default, `username_IMG123456789_1789_6543_n.jpg` for images and `username_VID987654321_1789_6543_n.mp4` for videos, using the file's full name on Instagram. Click the extension's icon to change the prefix, suffix and name, or to leave out the username or the IMG / VID tag.
 
 ## Install
 
