@@ -44,16 +44,21 @@
     }
   }
 
+  // Only Instagram's API carries story data. Everything else, video segments included, is
+  // left alone so it isn't copied and decoded for nothing.
+  const isApiUrl = (url) => /\/graphql|\/api\/v1\//.test(url);
+
   const originalFetch = window.fetch;
   window.fetch = async function (...args) {
     const response = await originalFetch.apply(this, args);
-    response.clone().text().then(harvest).catch(() => {});
+    if (isApiUrl(response.url)) response.clone().text().then(harvest).catch(() => {});
     return response;
   };
 
   const originalSend = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function (...args) {
     this.addEventListener('load', () => {
+      if (!isApiUrl(this.responseURL)) return;
       if (this.responseType === '' || this.responseType === 'text') harvest(this.responseText);
     });
     return originalSend.apply(this, args);

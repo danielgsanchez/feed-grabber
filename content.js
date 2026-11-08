@@ -9,6 +9,7 @@
   const BTN_SIZE = 36;
   const BTN_MARGIN = 10;
   const REFRESH_MS = 300;
+  const SCROLL_SETTLE_MS = 150;
   const NON_USER_PATHS = new Set([
     'p', 'reel', 'reels', 'tv', 'explore', 'stories', 'direct',
     'accounts', 'about', 'legal', 'developer', 'api',
@@ -189,18 +190,31 @@
   const storiesByPk = new Map();
   const storiesByReel = new Map(); // key: username or "highlight:<id>"
 
+  const MAX_REMEMBERED = 2000; // keeps memory flat in long sessions
+
   addEventListener('message', (e) => {
     if (e.source !== window || e.data?.source !== 'igdl-reels') return;
 
     for (const reel of e.data.reels) {
       const items = reel.items.map((item) => ({ ...item, username: reel.username }));
-      for (const item of items) storiesByPk.set(item.pk, item);
+      for (const item of items) {
+        storiesByPk.delete(item.pk); // so it counts as the newest
+        storiesByPk.set(item.pk, item);
+      }
 
       for (const key of [reel.username, reel.id]) {
         if (!key) continue;
         const incoming = new Set(items.map((item) => item.pk));
         const kept = (storiesByReel.get(key) || []).filter((item) => !incoming.has(item.pk));
+        storiesByReel.delete(key);
         storiesByReel.set(key, [...kept, ...items]);
+      }
+    }
+    // Maps keep insertion order, so the first keys are the oldest.
+    for (const map of [storiesByPk, storiesByReel]) {
+      for (const key of map.keys()) {
+        if (map.size <= MAX_REMEMBERED) break;
+        map.delete(key);
       }
     }
   });
@@ -364,7 +378,29 @@
         return;
       }
     }
+    hideButton();
+  }
+
+  function hideButton() {
     if (button) button.style.display = 'none';
+  }
+
+  // Instagram changes page and slide without notice, so while the button is shown, and
+  // always in stories, we also re-check now and then. Otherwise nothing runs until the
+  // mouse moves.
+  let watchTimer = null;
+  function updateWatch() {
+    const needed = isStoryPage() || button?.style.display === 'flex';
+    if (needed && !watchTimer) watchTimer = setInterval(refreshAndWatch, REFRESH_MS);
+    if (!needed && watchTimer) {
+      clearInterval(watchTimer);
+      watchTimer = null;
+    }
+  }
+
+  function refreshAndWatch() {
+    refreshButton();
+    updateWatch();
   }
 
   let framePending = false;
@@ -373,15 +409,30 @@
     framePending = true;
     requestAnimationFrame(() => {
       framePending = false;
-      refreshButton();
+      refreshAndWatch();
     });
+  }
+
+  // While scrolling the feed, the button is hidden and the page isn't inspected: that
+  // would make the browser recalculate the layout on every frame. It comes back once it
+  // stops. Stories don't scroll, and their button stays put.
+  let scrollTimer = null;
+  function onScroll() {
+    if (isStoryPage()) return;
+    hideButton();
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      scrollTimer = null;
+      scheduleRefresh();
+    }, SCROLL_SETTLE_MS);
   }
 
   document.addEventListener(
     'mousemove',
     (e) => {
+      if (pointer && pointer.x === e.clientX && pointer.y === e.clientY) return;
       pointer = { x: e.clientX, y: e.clientY };
-      scheduleRefresh();
+      if (!scrollTimer) scheduleRefresh();
     },
     { passive: true },
   );
@@ -389,8 +440,8 @@
     pointer = null;
     scheduleRefresh();
   });
-  addEventListener('scroll', scheduleRefresh, { passive: true, capture: true });
+  addEventListener('scroll', onScroll, { passive: true, capture: true });
   addEventListener('resize', scheduleRefresh, { passive: true });
-  // Instagram changes page and slide without notice, so we also re-check often.
-  setInterval(refreshButton, REFRESH_MS);
+  // A story opened directly shows its button without waiting for the mouse.
+  addEventListener('DOMContentLoaded', refreshAndWatch);
 })();
