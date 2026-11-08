@@ -4,6 +4,7 @@
 // @version      0.5.2
 // @description  Download the Instagram photo or video you are viewing (including carousel slides) and stories.
 // @author       danielgsanchez
+// @license      MIT
 // @homepageURL  https://github.com/danielgsanchez/feed-grabber
 // @supportURL   https://github.com/danielgsanchez/feed-grabber/issues
 // @updateURL    https://raw.githubusercontent.com/danielgsanchez/feed-grabber/main/feed-grabber.user.js
